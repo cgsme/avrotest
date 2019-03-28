@@ -21,5 +21,20 @@ public class App {
                 .setFavoriteColor("blue")
                 .setFavoriteNumber(null)
                 .build();
+
+
+        /*here:
+        for (int i=0;i<100;i++) {
+            System.out.println("==== i:"+i);
+            there:
+            for (int j=0;j<100;j++) {
+                System.out.println("j=" + j);
+                if (j == 10) {
+                    break there;
+                }
+            }
+
+        }
+        System.out.println("over");*/
     }
 }
