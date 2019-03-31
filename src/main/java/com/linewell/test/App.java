@@ -15,11 +15,11 @@ public class App {
         // 通过构造函数
         User user2 = new User("Ben", 7, "red");
 
-        // 通过build构造
+        // 通过build构造，会自动设置默认值
         User user3 = User.newBuilder()
                 .setName("charlie")
                 .setFavoriteColor("blue")
-                .setFavoriteNumber(null)
+//                .setFavoriteNumber(null)
                 .build();
 
 
