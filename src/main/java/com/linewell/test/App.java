@@ -1,8 +1,11 @@
 package com.linewell.test;
 
 import com.linewell.avro.User;
+import org.apache.avro.Schema;
 import org.apache.avro.file.DataFileReader;
 import org.apache.avro.file.DataFileWriter;
+import org.apache.avro.generic.GenericData;
+import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.io.DatumReader;
 import org.apache.avro.io.DatumWriter;
 import org.apache.avro.specific.SpecificDatumReader;
@@ -15,9 +18,43 @@ import java.io.IOException;
  * Hello world!
  */
 public class App {
+
+
     public static void main(String[] args) {
+
+        // 利用代码生成进行序列化和反序列化
+//        withCodeGeneration();
+
+        // 不利用代码生成进行序列化和反序列化
+        withoutCodeGeneration();
+
+    }
+
+    // 不利用代码生成进行序列化和反序列化
+    public static void withoutCodeGeneration() {
+        try {
+            // 首先使用解析器Parser读取schema定义文件，并创建Schema对象。
+            Schema schema = new Schema.Parser().parse(new File("C:\\Users\\cguisheng\\IdeaProjects\\avrotest\\src\\main\\avro\\user.avsc"));
+            // 使用该schema对象创建一些users
+            GenericRecord user1 = new GenericData.Record(schema);
+            user1.put("name", "曹gs");
+            user1.put("favorite_number", 256);
+            // favorite color 为null
+
+            GenericRecord user2 = new GenericData.Record(schema);
+            user2.put("name", "Ben");
+            user2.put("favorite_number", 7);
+            user2.put("favorite_color", "red");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // 利用代码生成进行序列化和反序列化
+    public static void withCodeGeneration() {
         User user1 = new User();
-        user1.setName("Alyssa");
+        user1.setName("曹gs");
         user1.setFavoriteNumber(256);
         // favoriteColor = null
 
@@ -26,7 +63,7 @@ public class App {
 
         // 通过build构造，会自动设置默认值
         User user3 = User.newBuilder()
-                .setName("charlie")
+                .setName("曹gssss")
                 .setFavoriteColor("blue")
                 .setFavoriteNumber(null)
                 .build();
@@ -67,6 +104,5 @@ public class App {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 }

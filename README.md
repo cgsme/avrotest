@@ -134,3 +134,23 @@ avro模式使用json定义，模式由简单类型（null, boolean, int, long, f
             user = dataFileReader.next(user);
             System.out.println(user);
         }
+
+
+###### 不使用代码生成进行序列化或反序列化
+        avro中的数据总是和其对应的schema一起存储，说明我们不需要得到schema就可以读取序列化的项。
+    所以我们可以在不生成代码的情况下进行序列化和反序列化。
+* 创建users  
+  
+        // 首先使用解析器Parser读取schema定义文件，并创建Schema对象。
+        Schema schema = new Schema.Parser().parse(new File("user.avsc"));
+        
+        // 使用该schema对象创建一些users
+        GenericRecord user1 = new GenericData.Record(schema);
+        user1.put("name", "Alyssa");
+        user1.put("favorite_number", 256);
+        // favorite color 为null
+        
+        GenericRecord user2 = new GenericData.Record(schema);
+        user2.put("name", "Ben");
+        user2.put("favorite_number", 7);
+        user2.put("favorite_color", "red");
