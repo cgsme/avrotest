@@ -1,5 +1,22 @@
-# avrotest
+# avro
 ---
+
+#### avro介绍
+Apache avro是一种数据序列化系统。
+avro提供：
+* 丰富的数据格式
+* 紧凑，快速的二进制数据格式
+* 容器文件，用于存储持久的数据
+* 远程过程调用（RPC）
+* 与动态语言(js\php\asp\ruby\python等)的简单集成。读取或写入文件时不需要使用代码生成，也不需要使用或实现RPC协议。代码生成作为可选的优化组合，仅值得在静态语言(java\c++\c#等)下实现。
+
+
+#### schema（模式）
+
+
+
+
+
 #### 1、下载
 ###### jar方式
 avro有几种实现：C, C++, C#, Java, PHP, Python, Ruby。我们主要使用avro-1.8.2.jar 和 avro-tools-1.8.2.jar（用于代码生成）两个jar包即可。<br>
@@ -137,7 +154,7 @@ avro模式使用json定义，模式由简单类型（null, boolean, int, long, f
 
 
 ###### 不使用代码生成进行序列化或反序列化
-        avro中的数据总是和其对应的schema一起存储，说明我们不需要得到schema就可以读取序列化的项。
+    avro中的数据总是和其对应的schema一起存储，说明我们不需要得到schema就可以读取序列化的项。
     所以我们可以在不生成代码的情况下进行序列化和反序列化。
 * 创建users  
   
@@ -148,9 +165,42 @@ avro模式使用json定义，模式由简单类型（null, boolean, int, long, f
         GenericRecord user1 = new GenericData.Record(schema);
         user1.put("name", "Alyssa");
         user1.put("favorite_number", 256);
-        // favorite color 为null
+        // favorite color 设为null，因为该字段的类型为复杂类型["String", null]，即可以二者选一
         
         GenericRecord user2 = new GenericData.Record(schema);
         user2.put("name", "Ben");
         user2.put("favorite_number", 7);
         user2.put("favorite_color", "red");
+
+* 序列化
+                
+    // 不使用代码生成时进行对象的序列化和反序列化和使用代码生成的情况类似，不同的地方在于此处使用通用的（generic）reader和writer。
+       
+       // 序列化 user1 和 user2 到磁盘
+       File file = new File("users2.avro");
+       // 不使用代码生成时，使用GenericDatumWriter：它需要schema来确定如何写入繁星记录，并验证是否存在不为空的字段。
+       DatumWriter<GenericRecord> datumWriter = new GenericDatumWriter<GenericRecord>(schema);
+       // DataFileWriter用于向 dataFileWriter.create(schema, file);中指定的文件中写入序列化记录和schema(模式)
+       DataFileWriter<GenericRecord> dataFileWriter = new DataFileWriter<GenericRecord>(datumWriter);
+       dataFileWriter.create(schema, file);
+       // 通过append方法将数据写入文件
+       dataFileWriter.append(user1);
+       dataFileWriter.append(user2);
+       // 关闭资源
+       dataFileWriter.close();
+       
+* 反序列化  
+
+        // 从磁盘反序列化user对象到GenericRecord对象中
+        DatumReader<GenericRecord> datumReader = new GenericDatumReader<GenericRecord>(schema);
+        DataFileReader<GenericRecord> dataFileReader = new DataFileReader<GenericRecord>(file, datumReader);
+        GenericRecord user = null;
+        while (dataFileReader.hasNext()) {
+            // 将user对象传递给dataFileReader.next(user);实习重用，减少垃圾回收，提高性能
+            user = dataFileReader.next(user);
+            System.out.println(user);
+        }
+        // 输出：
+        // {"name": "Alyssa", "favorite_number": 256, "favorite_color": null}
+        // {"name": "Ben", "favorite_number": 7, "favorite_color": "red"}
+        

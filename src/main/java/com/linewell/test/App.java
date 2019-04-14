@@ -5,6 +5,8 @@ import org.apache.avro.Schema;
 import org.apache.avro.file.DataFileReader;
 import org.apache.avro.file.DataFileWriter;
 import org.apache.avro.generic.GenericData;
+import org.apache.avro.generic.GenericDatumReader;
+import org.apache.avro.generic.GenericDatumWriter;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.io.DatumReader;
 import org.apache.avro.io.DatumWriter;
@@ -15,7 +17,10 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Hello world!
+ * avro测试类
+ *
+ * @author cguisheng
+ * @date 2019-04-10
  */
 public class App {
 
@@ -37,14 +42,47 @@ public class App {
             Schema schema = new Schema.Parser().parse(new File("C:\\Users\\cguisheng\\IdeaProjects\\avrotest\\src\\main\\avro\\user.avsc"));
             // 使用该schema对象创建一些users
             GenericRecord user1 = new GenericData.Record(schema);
-            user1.put("name", "曹gs");
+            user1.put("name", "Alyssa");
             user1.put("favorite_number", 256);
-            // favorite color 为null
+            // favorite color 设为null，因为该字段的类型为复杂类型["String", null]，即可以二者选一
 
             GenericRecord user2 = new GenericData.Record(schema);
             user2.put("name", "Ben");
             user2.put("favorite_number", 7);
             user2.put("favorite_color", "red");
+
+
+            // ============ 序列化begin ==========================
+            // 序列化 user1 和 user2 到磁盘
+            File file = new File("users2.avro");
+            // 不使用代码生成时，使用GenericDatumWriter：它需要schema来确定如何写入繁星记录，并验证是否存在不为空的字段。
+            DatumWriter<GenericRecord> datumWriter = new GenericDatumWriter<GenericRecord>(schema);
+            // DataFileWriter用于向 dataFileWriter.create(schema, file);中指定的文件中写入序列化记录和schema(模式)
+            DataFileWriter<GenericRecord> dataFileWriter = new DataFileWriter<GenericRecord>(datumWriter);
+            dataFileWriter.create(schema, file);
+            // 通过append方法将数据写入文件
+            dataFileWriter.append(user1);
+            dataFileWriter.append(user2);
+            // 关闭资源
+            dataFileWriter.close();
+            // ============ 序列化end
+
+
+            // ============ 反序列化begin
+            // 从磁盘反序列化user对象
+            DatumReader<GenericRecord> datumReader = new GenericDatumReader<GenericRecord>(schema);
+            DataFileReader<GenericRecord> dataFileReader = new DataFileReader<GenericRecord>(file, datumReader);
+            GenericRecord user = null;
+            while (dataFileReader.hasNext()) {
+                // 将user对象传递给dataFileReader.next(user);实现重用，减少垃圾回收，提高性能
+                user = dataFileReader.next(user);
+                System.out.println(user);
+            }
+            // 输出：
+            // {"name": "Alyssa", "favorite_number": 256, "favorite_color": null}
+            // {"name": "Ben", "favorite_number": 7, "favorite_color": "red"}
+            // ============ 反序列化end
+
         } catch (IOException e) {
             e.printStackTrace();
         }
