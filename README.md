@@ -1,6 +1,5 @@
-# avro
----
 
+# avro
 #### avro介绍
 Apache avro是一种数据序列化系统。
 avro提供：
@@ -76,8 +75,7 @@ avro的java实现还依赖了[Jackson](http://wiki.fasterxml.com/JacksonDownload
     
     
 #### 定义模式（schema）
-avro模式使用json定义，模式由简单类型（null, boolean, int, long, float, double, bytes, and string）、<br>
-和复杂类型（record, enum, array, map, union, and fixed）组成
+avro模式使用json定义，模式由简单类型（null, boolean, int, long, float, double, bytes, and string）、和复杂类型（record, enum, array, map, union, and fixed）组成
 
     当个avsc文件只能包含一个schema定义
     user.avsc:
@@ -207,11 +205,35 @@ avro模式使用json定义，模式由简单类型（null, boolean, int, long, f
         DataFileReader<GenericRecord> dataFileReader = new DataFileReader<GenericRecord>(file, datumReader);
         GenericRecord user = null;
         while (dataFileReader.hasNext()) {
-            // 将user对象传递给dataFileReader.next(user);实习重用，减少垃圾回收，提高性能
+            // 将user对象传递给dataFileReader.next(user);实现重用，减少垃圾回收，提高性能
             user = dataFileReader.next(user);
             System.out.println(user);
         }
         // 输出：
         // {"name": "Alyssa", "favorite_number": 256, "favorite_color": null}
         // {"name": "Ben", "favorite_number": 7, "favorite_color": "red"}
+        
+---
+
+# avro规范
+#### schema声明
+  schema由下面中的一种json格式表示：
+  * 命名了一个已经定义了的类型的json字符串
+  * 一个格式如下的json对象： <br>
+    {"type":"typeName", ...attributes...} <br>
+    其中typeName是基本类型或派生类型名称，允许未在文档中定义的属性作为元数据，但是必须不能影响序列号数据的格式。
+  * 一个JSON数组，表示嵌入类型的联合。
+  
+#### 基本类型
+  基本类型的名称集合：
+    * null: 没有值
+    * boolean: 二进制值
+    * int: 32位有符号整数
+    * long: 64位有符号整数
+    * float: 单精度（32位）IEEE 754浮点数
+    * double: 双精度（64位）IEEE 754浮点数
+    * bytes: 8位无符号字节序列
+    * string: unicode字符序列
+  基本类型没有指定的属性。<br>
+  基本类型名称也是定义的类型名称。因此例如，schema的"string"等效于{"type": "string"}。
         
