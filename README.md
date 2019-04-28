@@ -236,4 +236,47 @@ avro模式使用json定义，模式由简单类型（null, boolean, int, long, f
     * string: unicode字符序列
   基本类型没有指定的属性。<br>
   基本类型名称也是定义的类型名称。因此例如，schema的"string"等效于{"type": "string"}。
+  
+  
+  例子：使用以下内容定义值为64位的链接list：
+   
+    {
+        "type": "record",
+        "name": "LongList",     
+        "aliases": ["LinkedLongs"],
+        "fields": [
+            { "name": "value", "type": "long" },   // 每一个都必须是long
+            { "name": "next", "type": ["null", "LongList"] }   // 可以为null或LongList
+        ]
+    }
         
+  Enums
+  Enums使用type名为"enum"，支持以下属性：
+  * name: 提供枚举名称的json字符串（必须）。
+  * namespace，一个限定名称（包名）的JSON字符串。
+  * aliases: 一个JSON字符串数组，为此枚举提供备用名称（可选）。
+  * doc: schema的文档说明（可选）。
+  * symbols: 列出json字符串元素的json数组。（必须）枚举中的所有元素都必须是唯一的，每个元素必须与正则表达式[A-Za-z _] [A-Za-z0-9 _] *（与名称相同的要求）匹配。
+  
+  例子，扑克牌可以定义为：
+  
+    {
+        "type": "enum",
+        "name": ""Suit,
+        "symbols": ["SPADES", "HEARTS", "DIAMONS", "CLUBS"]
+        
+    }
+    
+  Arrays
+  数组使用type名为"array"并支持以下属性：
+  * items: 数组的元素的schema
+  
+  例子，一个string数组可以被定义为：
+  
+    {
+        "type": "array",
+        "items": "string"
+    }
+    
+    
+  
