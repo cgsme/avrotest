@@ -23,6 +23,9 @@ Avro提供类似于诸如[Thrift](http://thrift.apache.org/)，[Protocol Buffers
 * 无标记数据：由于在读取数据时存在模式，因此需要进行编码的类型信息少的多，因此序列化大小较小。
 * 没有手动分配的字段ID：当schema改变时，处理数据时始终存在旧schema和新schema，因此，可以使用字段名象征性地解决差异。
 
+
+
+
 ----
 
 
@@ -237,8 +240,22 @@ avro模式使用json定义，模式由简单类型（null, boolean, int, long, f
 * string: unicode字符序列<br>
   基本类型没有指定的属性。<br>
   基本类型名称也是定义的类型名称。因此例如，schema的"string"等效于{"type": "string"}。
-  
-  
+        
+#### 复杂类型
+avro支持6种复杂类型：records, enums, arrays, maps, unions 和 fixed。<br>
+_Records_:<br>
+Records使用record为类型名，并具有3个属性：
+* name: 一个json字符串，表示record的名称（必须）
+* namespace: 限定名称的json字符串。
+* doc: 文档信息，给使用该schema的用户提示。（可选）
+* aliases: 给record设置`别名`的json字符串数组。（可选）
+* fields: 展示field的json数组，每一个field都是一个json对象，并具有以下属性：<br>
+    * name: 描述field名称的json字符串（必须）。
+    * doc: 给用户写的field描述的json字符串。（可选）
+    * type: 一个定义schema的json对象或者命名记录定义的json字符串。（必须）
+    * default: field的默认值，在读取缺少此字段的实例时使用（可选）。根据下表所示，default允许的值取决于field的schema类型。union字段的默认值对应于联合中的第一个架构。<br>
+    bytes和fix字段的默认值是Unicode代码点0-255映射到无符号8位字节值0-255的JSON字符串。
+    
   例子：使用以下内容定义值为64位的链接list：
    
     {
