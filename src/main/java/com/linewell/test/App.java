@@ -65,7 +65,7 @@ public class App {
             dataFileWriter.append(user2);
             // 关闭资源
             dataFileWriter.close();
-            // ============ 序列化end
+            // ============ 序列化end ====================================
 
 
             // ============ 反序列化begin
@@ -81,7 +81,7 @@ public class App {
             // 输出：
             // {"name": "Alyssa", "favorite_number": 256, "favorite_color": null}
             // {"name": "Ben", "favorite_number": 7, "favorite_color": "red"}
-            // ============ 反序列化end
+            // ============ 反序列化end ==============================
 
         } catch (IOException e) {
             e.printStackTrace();
