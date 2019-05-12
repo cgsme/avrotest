@@ -27,6 +27,11 @@ public class App {
 
     public static void main(String[] args) {
 
+
+        // 大多数Avro使用的是GenericRecord或SpecificRecord的子类。
+        // 从Avro模式生成的Java类是后者的子类，而前者可以在没有使用数据结构的前提条件下使用。
+
+
         // 利用代码生成进行序列化和反序列化
 //        withCodeGeneration();
 
@@ -37,6 +42,7 @@ public class App {
 
     // 不利用代码生成进行序列化和反序列化
     public static void withoutCodeGeneration() {
+
         try {
             // 首先使用解析器Parser读取schema定义文件，并创建Schema对象。
             Schema schema = new Schema.Parser().parse(new File("C:\\Users\\cguisheng\\IdeaProjects\\avrotest\\src\\main\\avro\\user.avsc"));
