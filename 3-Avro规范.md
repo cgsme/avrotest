@@ -1,8 +1,9 @@
 ## avro规范
 [官方规范原文](http://avro.apache.org/docs/current/spec.html)
+
 #### schema声明
   schema由下面中的一种json格式表示：
-  * 命名了一个已经定义了的类型的json字符串
+  * 具有一个已经定义了的类型的json字符串
   * 一个格式如下的json对象： <br>
     {"type":"typeName", ...attributes...} <br>
     其中typeName是基本类型或派生类型名称，允许未在文档中定义的属性作为元数据，但是必须不能影响序列号数据的格式。
@@ -24,7 +25,7 @@
 #### 复杂类型
 avro支持6种复杂类型：records, enums, arrays, maps, union 和 fixed。<br>
 
-_Records_:<br>
+_Records_记录:<br>
 Records使用record为类型名，并具有3个属性：
 * name: 一个json字符串，表示record的名称（必须）
 * namespace: 限定名称的json字符串。
@@ -37,7 +38,7 @@ Records使用record为类型名，并具有3个属性：
     * default: field的默认值，在读取缺少此字段的实例时使用（可选）。根据下表所示，default允许的值取决于field的schema类型。union字段的默认值对应于联合中的第一个架构。<br>
     bytes和fix字段的默认值是Unicode代码点0-255映射到无符号8位字节值0-255的JSON字符串。
     
-  例子：使用以下内容定义值为64位的链接list：
+  例子：使定义值为64位的链接list：
    
     {
         "type": "record",
@@ -59,13 +60,13 @@ Records使用record为类型名，并具有3个属性：
   
   例子，扑克牌可以定义为：
   
-    {
+    `{
         "type": "enum",
         "name": ""Suit,
         "symbols": ["黑桃", "红桃", "方块", "梅花"]
-    }
+    }`
     
-  Arrays
+  Arrays 数组
   数组使用type名为"array"并支持以下属性：
   * items: 数组的元素的schema
   
@@ -76,7 +77,7 @@ Records使用record为类型名，并具有3个属性：
    }`
     
   
-  Maps
+  Maps 
   Maps使用类型名称"map"表示，并支持以下一个属性：
   * values：map的值的schema。
   

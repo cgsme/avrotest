@@ -66,6 +66,7 @@ XML 和 JSON都有很强的表达性，但是他们太大了并且处理比较�
 #### 应用场景
 avro相关应用：https://blog.cloudera.com/blog/category/avro/
 
+Nifi -_-
 kafka:
     一个主要的痛点可能是协调生产者和消费者之间商定的信息格式。<br>
     案例介绍:
@@ -80,13 +81,17 @@ kafka:
         StructuredStreamingRefApp-演示 Kafka-> Spark Structured Streaming -> Kudu pipeline for ingestion
 Hive 
     [demo](https://www.iteblog.com/archives/1007.html)
-Hadoop（MapReduce）
+Hadoop（MapReduce、在Hadoop中将Apache Avro数据转换为[Parquet][]格式）
+
 Spark
 Pig
+Hbase
 flume(日志采集、聚合和传输的系统)
 ...
 
 
+
+[Parquet]:https://www.baidu.com/link?url=brMlrPm5Vi4SgWhN1d0p4Dnn9u6SNT72Y0Lulq6BdkM0TFKJP5-pn59sSUHvZBAM&wd=&eqid=b6b01cc40000ba78000000065cdad2a8
 
 
 
