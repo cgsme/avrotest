@@ -9,47 +9,18 @@
     <version>1.0-SNAPSHOT</version>
 
     <name>avrotest</name>
-
-    <repositories>
-        <!-- Cloudera maven repository to resolve dependencies -->
-        <repository>
-            <id>cloudera</id>
-            <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
-            <releases><enabled>true</enabled></releases>
-            <snapshots><enabled>false</enabled></snapshots>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <!-- Cloudera maven repository to resolve plugins (the same repo) -->
-        <pluginRepository>
-            <id>cloudera-plugins</id>
-            <url>https://repository.cloudera.com/artifactory/cloudera-repos/</url>
-            <releases><enabled>true</enabled></releases>
-            <snapshots><enabled>false</enabled></snapshots>
-        </pluginRepository>
-    </pluginRepositories>
-
-
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <avro.version>1.7.6-cdh5.14.0</avro.version>
-    </properties>
     <dependencies>
+
         <dependency>
-            <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka-clients</artifactId>
-            <version>0.11.0-kafka-3.0.0</version>
-        </dependency>
-        <dependency>
-            <artifactId>avro</artifactId>
             <groupId>org.apache.avro</groupId>
-            <version>${avro.version}</version>
+            <artifactId>avro</artifactId>
+            <version>1.8.2</version>
         </dependency>
         <dependency>
-            <groupId>net.sf.jopt-simple</groupId>
-            <artifactId>jopt-simple</artifactId>
-            <version>4.9</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>
@@ -75,11 +46,10 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>1.6</source>
+                    <target>1.6</target>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
 </project>
